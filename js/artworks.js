@@ -6,11 +6,11 @@
     },
     {
       id: "C001",
-      image: "images/type-b/C001.JPG"
+      image: "images/type-c/C001.JPG"
     },
     {
       id: "A002",
-      image: "images/type-c/A002.png"
+      image: "images/type-a/A002.png"
     },
     {
       id: "C002",

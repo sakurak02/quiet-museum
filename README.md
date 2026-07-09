@@ -30,14 +30,21 @@ assets/logo/
 ```js
 {
   id: "A002",
-  type: "A",
-  title: "Artwork Title",
-  image: "images/type-a/A002.png",
-  memo: "制作メモ"
+  image: "images/type-a/A002.png"
 }
 ```
 
-作品番号は `A001`、`B001`、`C001` のようにTypeごとに管理します。
+作品番号は `A001`、`B001`、`C001` のようにTypeごとに管理します。展示順は `ARTWORKS` の並び順そのままです。
+
+作品の種類はIDの先頭文字で判定します。
+
+```text
+A : AI Abstract
+B : AI × Keiko
+C : Keiko Drawing
+```
+
+作品追加時は、`ARTWORKS` の最後へ1ブロック追加してください。
 
 ## GitHub Pages
 

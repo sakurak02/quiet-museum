@@ -18,7 +18,7 @@
 
     const image = document.createElement("img");
     image.src = artwork.image;
-    image.alt = `${artwork.id} ${artwork.title}`;
+    image.alt = artwork.id;
     image.loading = "lazy";
     imageWrap.appendChild(image);
 
@@ -26,8 +26,6 @@
     meta.className = "card-meta";
     meta.innerHTML = `
       <span class="artwork-number">${artwork.id}</span>
-      <span class="artwork-type">${museum.getTypeLabel(artwork.type)}</span>
-      <h2 class="artwork-title">${artwork.title}</h2>
     `;
 
     card.append(imageWrap, meta);

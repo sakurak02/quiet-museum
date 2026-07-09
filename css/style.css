@@ -199,16 +199,9 @@ p {
   gap: 2px;
 }
 
-.artwork-number,
-.artwork-type {
+.artwork-number {
   color: var(--muted);
   font-size: 0.82rem;
-}
-
-.artwork-title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 400;
 }
 
 .artwork-view {
@@ -241,24 +234,10 @@ p {
   padding-top: 8px;
 }
 
-.artwork-detail h1 {
-  margin: 12px 0 26px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 400;
-  line-height: 1.12;
-}
-
-.detail-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  margin-bottom: 8px;
-}
-
-.memo {
-  margin: 0 0 34px;
-  color: #46443f;
+.artwork-detail-number {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .like-button {
@@ -289,6 +268,26 @@ p {
 .empty-state {
   padding: 72px 0;
   text-align: center;
+}
+
+.about-section {
+  margin-top: 82px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.about-section h2 {
+  margin: 0 0 18px;
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+
+.about-section p {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
 }
 
 @media (max-width: 760px) {

@@ -5,12 +5,16 @@
       image: "images/type-a/A001.png"
     },
     {
-      id: "B001",
-      image: "images/type-b/B001.png"
+      id: "C001",
+      image: "images/type-b/C001.JPG"
     },
     {
-      id: "C001",
-      image: "images/type-c/C001.png"
+      id: "A002",
+      image: "images/type-c/A002.png"
+    },
+    {
+      id: "C002",
+      image: "images/type-c/C002.jpg"
     }
   ];
 

@@ -1,32 +1,87 @@
-(function () {
-  const STORAGE_KEY = "quietMuseum.likes";
+import { doc, increment, setDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { db } from "./firebase-config.js";
 
-  function readLikes() {
+const ID_PATTERN = /^[ABC][0-9]{3}$/;
+
+function storageKey(artworkId) {
+  return `quietMuseum.likes.v1.${artworkId}`;
+}
+
+function getArtworkId(button) {
+  const idFromButton = button?.dataset.artworkId || "";
+
+  if (idFromButton) {
+    return idFromButton;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id") || "";
+}
+
+function hasLiked(artworkId) {
+  return localStorage.getItem(storageKey(artworkId)) === "true";
+}
+
+function markLiked(artworkId) {
+  localStorage.setItem(storageKey(artworkId), "true");
+}
+
+function renderButton(button, liked) {
+  button.textContent = liked ? "❤" : "♡";
+  button.setAttribute("aria-pressed", String(liked));
+  button.setAttribute(
+    "aria-label",
+    liked ? "この作品には♡をつけています" : "この作品に♡をつける"
+  );
+}
+
+function initLikeButton() {
+  const button = document.querySelector(".like-button");
+
+  if (!button || button.dataset.likeInitialized === "true") {
+    return;
+  }
+
+  const artworkId = getArtworkId(button);
+
+  if (!ID_PATTERN.test(artworkId)) {
+    console.error("Invalid artwork ID for like button:", artworkId);
+    return;
+  }
+
+  button.dataset.likeInitialized = "true";
+  renderButton(button, hasLiked(artworkId));
+
+  button.addEventListener("click", async () => {
+    if (hasLiked(artworkId)) {
+      renderButton(button, true);
+      return;
+    }
+
+    button.disabled = true;
+
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      await setDoc(
+        doc(db, "likes", artworkId),
+        { count: increment(1) },
+        { merge: true }
+      );
+
+      markLiked(artworkId);
+      renderButton(button, true);
     } catch (error) {
-      return {};
+      console.error("Failed to save artwork like:", error);
+      renderButton(button, false);
+    } finally {
+      button.disabled = false;
     }
-  }
+  });
+}
 
-  function writeLikes(likes) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(likes));
-  }
+document.addEventListener("quietMuseum:artworkRendered", initLikeButton);
 
-  window.QuietMuseumLikes = {
-    isLiked(id) {
-      return Boolean(readLikes()[id]);
-    },
-    toggle(id) {
-      const likes = readLikes();
-      likes[id] = !likes[id];
-
-      if (!likes[id]) {
-        delete likes[id];
-      }
-
-      writeLikes(likes);
-      return Boolean(likes[id]);
-    }
-  };
-})();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initLikeButton);
+} else {
+  initLikeButton();
+}

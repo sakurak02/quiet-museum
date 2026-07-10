@@ -23,7 +23,6 @@
 
   const previous = museum.artworks[currentIndex - 1];
   const next = museum.artworks[currentIndex + 1];
-  const liked = window.QuietMuseumLikes?.isLiked(artwork.id) || false;
 
   document.title = `${artwork.id} | Quiet Museum`;
 
@@ -34,7 +33,7 @@
       </div>
       <section class="artwork-detail">
         <p class="artwork-detail-number">${artwork.id}</p>
-        <button class="like-button" type="button" aria-label="お気に入り" aria-pressed="${liked}">${liked ? "❤" : "♡"}</button>
+        <button class="like-button" type="button" data-artwork-id="${artwork.id}" aria-label="この作品に♡をつける" aria-pressed="false">♡</button>
         <nav class="artwork-nav" aria-label="作品移動">
           ${previous ? `<a class="button" href="artwork.html?id=${encodeURIComponent(previous.id)}">Previous</a>` : `<span class="button disabled" aria-disabled="true">Previous</span>`}
           ${next ? `<a class="button" href="artwork.html?id=${encodeURIComponent(next.id)}">Next</a>` : `<span class="button disabled" aria-disabled="true">Next</span>`}
@@ -44,10 +43,9 @@
     </article>
   `;
 
-  const likeButton = container.querySelector(".like-button");
-  likeButton.addEventListener("click", () => {
-    const isLiked = window.QuietMuseumLikes.toggle(artwork.id);
-    likeButton.textContent = isLiked ? "❤" : "♡";
-    likeButton.setAttribute("aria-pressed", String(isLiked));
-  });
+  document.dispatchEvent(new CustomEvent("quietMuseum:artworkRendered", {
+    detail: {
+      artworkId: artwork.id
+    }
+  }));
 })();

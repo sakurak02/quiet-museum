@@ -40,8 +40,8 @@ assets/logo/
 
 ```text
 A : AI Abstract
-B : AI × Keiko
-C : Keiko Drawing
+B : AI × sakurak02
+C : sakurak02 Drawing
 ```
 
 作品追加時は、`ARTWORKS` の最後へ1ブロック追加してください。

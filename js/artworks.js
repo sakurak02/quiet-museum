@@ -2,19 +2,19 @@
   const ARTWORKS = [
     {
       id: "A001",
-      image: "images/type-a/A001.png"
+      image: "images/type-a/A001.webp"
     },
     {
       id: "C001",
-      image: "images/type-c/C001.JPG"
+      image: "images/type-c/C001.webp"
     },
     {
       id: "A002",
-      image: "images/type-a/A002.png"
+      image: "images/type-a/A002.webp"
     },
     {
       id: "C002",
-      image: "images/type-c/C002.jpg"
+      image: "images/type-c/C002.webp"
     }
   ];
 

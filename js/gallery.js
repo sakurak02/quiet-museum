@@ -9,7 +9,7 @@
   const fragment = document.createDocumentFragment();
   const galleryArtworks = [...museum.artworks].reverse();
 
-  galleryArtworks.forEach((artwork) => {
+  galleryArtworks.forEach((artwork, index) => {
     const card = document.createElement("a");
     card.className = "artwork-card";
     card.href = `artwork.html?id=${encodeURIComponent(artwork.id)}`;
@@ -23,13 +23,17 @@
     image.loading = "lazy";
     imageWrap.appendChild(image);
 
+    const galleryNumber = document.createElement("span");
+    galleryNumber.className = "gallery-number";
+    galleryNumber.textContent = String(index + 1).padStart(3, "0");
+
     const meta = document.createElement("div");
     meta.className = "card-meta";
     meta.innerHTML = `
       <span class="artwork-number">${artwork.id}</span>
     `;
 
-    card.append(imageWrap, meta);
+    card.append(galleryNumber, imageWrap, meta);
     fragment.appendChild(card);
   });
 

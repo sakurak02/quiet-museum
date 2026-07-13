@@ -173,7 +173,7 @@ p {
 
 .artwork-card {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .artwork-card:hover .card-image {
@@ -197,13 +197,22 @@ p {
 .card-meta {
   display: grid;
   gap: 2px;
+  justify-items: end;
+}
+
+.gallery-number {
+  color: var(--text);
+  font-size: 0.72rem;
+  line-height: 1.2;
 }
 
 .artwork-number {
   color: var(--muted);
   font-size: 0.76rem;
   line-height: 1.35;
+  max-width: 100%;
   overflow-wrap: anywhere;
+  text-align: right;
 }
 
 .artwork-view {

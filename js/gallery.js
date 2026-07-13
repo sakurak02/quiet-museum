@@ -25,7 +25,7 @@
 
     const galleryNumber = document.createElement("span");
     galleryNumber.className = "gallery-number";
-    galleryNumber.textContent = String(index + 1).padStart(3, "0");
+    galleryNumber.textContent = String(galleryArtworks.length - index).padStart(3, "0");
 
     const meta = document.createElement("div");
     meta.className = "card-meta";

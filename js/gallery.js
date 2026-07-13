@@ -7,8 +7,9 @@
   }
 
   const fragment = document.createDocumentFragment();
+  const galleryArtworks = [...museum.artworks].reverse();
 
-  museum.artworks.forEach((artwork) => {
+  galleryArtworks.forEach((artwork) => {
     const card = document.createElement("a");
     card.className = "artwork-card";
     card.href = `artwork.html?id=${encodeURIComponent(artwork.id)}`;

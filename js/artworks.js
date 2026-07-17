@@ -40,6 +40,10 @@
       id: "A005",
       image: "images/type-a/A005.webp"
     },
+    {
+      id: "A006",
+      image: "images/type-a/A006.webp"
+    },
   ];
 
   function getTypeFolder(id) {

@@ -33,23 +33,25 @@ jobs:
       - name: Verify generated changes
         shell: bash
         run: |
-          changed_files="$(git diff --name-only)"
-          if [[ -n "$changed_files" && "$changed_files" != "js/artworks.js" ]]; then
+          changed_files="$(git diff --name-only -- . \
+            ':(exclude)js/artworks.js' \
+            ':(exclude)sitemap.xml')"
+          if [[ -n "$changed_files" ]]; then
             echo "Unexpected files were changed:"
             echo "$changed_files"
             exit 1
           fi
 
-      - name: Commit and push the generated file
+      - name: Commit and push the generated files
         shell: bash
         run: |
-          if git diff --quiet -- js/artworks.js; then
-            echo "js/artworks.js is already up to date."
+          if git diff --quiet -- js/artworks.js sitemap.xml; then
+            echo "Generated files are already up to date."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add js/artworks.js
-          git commit -m "Automatically update artworks.js"
+          git add js/artworks.js sitemap.xml
+          git commit -m "Automatically update artwork data"
           git push origin "HEAD:${GITHUB_REF_NAME}"

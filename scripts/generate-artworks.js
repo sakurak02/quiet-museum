@@ -4,9 +4,12 @@ const path = require("node:path");
 const repositoryRoot = path.resolve(__dirname, "..");
 const imagesDirectory = path.join(repositoryRoot, "images");
 const artworksFile = path.join(repositoryRoot, "js", "artworks.js");
+const galleryFile = path.join(repositoryRoot, "gallery.html");
 const sitemapFile = path.join(repositoryRoot, "sitemap.xml");
 const artworkFileNamePattern = /^([ABC])(\d{3})\.webp$/;
 const siteBaseUrl = "https://sakurak02.github.io/quiet-museum";
+const galleryStartMarker = "<!-- ARTWORKS_START -->";
+const galleryEndMarker = "<!-- ARTWORKS_END -->";
 
 function findImageFiles(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -122,11 +125,73 @@ ${entries}
 `;
 }
 
+function escapeHtml(value) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function normalizeLineEndings(source) {
+  return source.replaceAll("\r\n", "\n");
+}
+
+function renderGalleryArtworks(artworksById, orderedIds) {
+  const galleryIds = [...orderedIds].reverse();
+  const cards = galleryIds
+    .map((id, index) => {
+      const escapedId = escapeHtml(id);
+      const escapedImagePath = escapeHtml(artworksById.get(id));
+      const type = escapeHtml(id.charAt(0));
+      const galleryNumber = String(galleryIds.length - index).padStart(3, "0");
+
+      return `      <a class="artwork-card" href="artwork.html?id=${escapedId}" data-artwork-type="${type}" aria-label="${escapedId}（分類 ${type}）">
+        <span class="gallery-number">${galleryNumber}</span>
+        <div class="card-image">
+          <img src="${escapedImagePath}" alt="${escapedId}" loading="lazy">
+        </div>
+        <div class="card-meta">
+          <span class="artwork-number">${escapedId}</span>
+        </div>
+      </a>`;
+    })
+    .join("\n");
+
+  return `${galleryStartMarker}
+${cards}
+      ${galleryEndMarker}`;
+}
+
+function replaceGalleryArtworks(source, artworksById, orderedIds) {
+  const startIndex = source.indexOf(galleryStartMarker);
+  const endIndex = source.indexOf(galleryEndMarker);
+
+  if (
+    startIndex < 0 ||
+    endIndex < 0 ||
+    endIndex < startIndex ||
+    source.indexOf(galleryStartMarker, startIndex + galleryStartMarker.length) >= 0 ||
+    source.indexOf(galleryEndMarker, endIndex + galleryEndMarker.length) >= 0
+  ) {
+    throw new Error("gallery.html must contain exactly one valid artwork marker pair");
+  }
+
+  const afterMarkers = endIndex + galleryEndMarker.length;
+  const generatedGalleryBlock = renderGalleryArtworks(artworksById, orderedIds);
+
+  return source.slice(0, startIndex) + generatedGalleryBlock + source.slice(afterMarkers);
+}
+
 const currentArtworksSource = fs.readFileSync(artworksFile, "utf8");
+const currentGallerySource = fs.readFileSync(galleryFile, "utf8");
 const currentSitemapSource = fs.readFileSync(sitemapFile, "utf8");
 const artworksById = getArtworkImages();
 const orderedIds = orderArtworkIds(artworksById, getExistingOrder(currentArtworksSource));
 const generatedArtworksSource = renderArtworks(artworksById, orderedIds);
+const generatedGallerySource = normalizeLineEndings(
+  replaceGalleryArtworks(currentGallerySource, artworksById, orderedIds)
+);
 const generatedSitemapSource = renderSitemap(orderedIds);
 const checkOnly = process.argv.includes("--check");
 const generatedFiles = [
@@ -137,6 +202,12 @@ const generatedFiles = [
     generatedSource: generatedArtworksSource
   },
   {
+    label: "gallery.html",
+    path: galleryFile,
+    currentSource: currentGallerySource,
+    generatedSource: generatedGallerySource
+  },
+  {
     label: "sitemap.xml",
     path: sitemapFile,
     currentSource: currentSitemapSource,
@@ -144,7 +215,8 @@ const generatedFiles = [
   }
 ];
 const outdatedFiles = generatedFiles.filter(
-  ({ currentSource, generatedSource }) => currentSource !== generatedSource
+  ({ currentSource, generatedSource }) =>
+    normalizeLineEndings(currentSource) !== normalizeLineEndings(generatedSource)
 );
 
 if (checkOnly) {

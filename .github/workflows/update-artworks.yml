@@ -35,6 +35,7 @@ jobs:
         run: |
           changed_files="$(git diff --name-only -- . \
             ':(exclude)js/artworks.js' \
+            ':(exclude)gallery.html' \
             ':(exclude)sitemap.xml')"
           if [[ -n "$changed_files" ]]; then
             echo "Unexpected files were changed:"
@@ -45,13 +46,13 @@ jobs:
       - name: Commit and push the generated files
         shell: bash
         run: |
-          if git diff --quiet -- js/artworks.js sitemap.xml; then
+          if git diff --quiet -- js/artworks.js gallery.html sitemap.xml; then
             echo "Generated files are already up to date."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add js/artworks.js sitemap.xml
+          git add js/artworks.js gallery.html sitemap.xml
           git commit -m "Automatically update artwork data"
           git push origin "HEAD:${GITHUB_REF_NAME}"

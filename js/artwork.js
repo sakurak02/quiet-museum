@@ -26,6 +26,12 @@
 
   document.title = `${artwork.id} | Quiet Museum`;
 
+  const canonical = document.createElement("link");
+  canonical.rel = "canonical";
+  canonical.href =
+    `https://sakurak02.github.io/quiet-museum/artwork.html?id=${encodeURIComponent(artwork.id)}`;
+  document.head.appendChild(canonical);
+
   container.innerHTML = `
     <article class="artwork-layout">
       <div class="artwork-image-wrap">

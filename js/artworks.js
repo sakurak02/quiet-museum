@@ -57,8 +57,8 @@
       image: "images/type-a/A007.webp"
     },
     {
-    id: "B005",
-    image: "images/type-b/B005.webp"
+      id: "B005",
+      image: "images/type-b/B005.webp"
     },
     {
     id: "B006",

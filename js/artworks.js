@@ -71,6 +71,11 @@
       id: "A008",
       image: "images/type-a/A008.webp"
     },
+    {
+      id: "D004",
+      image: "images/type-d/D004-THE-DEATH-OF-A-GOVERNMENT-CLERK.webp",
+      title: "THE DEATH OF A GOVERNMENT CLERK"
+    },
   ];
 
   function getTypeFolder(id) {

@@ -235,6 +235,17 @@ p {
   text-align: left;
 }
 
+.artwork-title--branched {
+  display: flex;
+  gap: 0.8em;
+  align-items: baseline;
+}
+
+.artwork-title-branch {
+  flex: 0 0 auto;
+  font-size: 0.95em;
+}
+
 .artwork-view {
   width: min(100% - 40px, 1240px);
   margin: 0 auto;
@@ -282,6 +293,17 @@ p {
   font-weight: 400;
   line-height: 1.35;
   text-align: left;
+}
+
+.artwork-detail-title--branched {
+  display: flex;
+  gap: 0.8em;
+  align-items: baseline;
+}
+
+.artwork-detail-title-branch {
+  flex: 0 0 auto;
+  font-size: 0.95em;
 }
 
 .like-button {

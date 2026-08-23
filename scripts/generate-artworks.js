@@ -7,7 +7,7 @@ const artworksFile = path.join(repositoryRoot, "js", "artworks.js");
 const galleryFile = path.join(repositoryRoot, "gallery.html");
 const sitemapFile = path.join(repositoryRoot, "sitemap.xml");
 const standardArtworkFileNamePattern = /^([ABC])(\d{3})\.webp$/;
-const literaryArtworkFileNamePattern = /^D(\d{3})-([A-Z0-9]+(?:-[A-Z0-9]+)*?)(?:-([1-9]\d*))?\.webp$/;
+const literaryArtworkFileNamePattern = /^D(\d{3})(?:-([1-9]\d*))?-([A-Z0-9]+(?:-[A-Z0-9]+)*)\.webp$/;
 const siteBaseUrl = "https://sakurak02.github.io/quiet-museum";
 const galleryStartMarker = "<!-- ARTWORKS_START -->";
 const galleryEndMarker = "<!-- ARTWORKS_END -->";
@@ -38,9 +38,9 @@ function getArtworkImages() {
 
     const type = standardMatch ? standardMatch[1] : "D";
     const number = standardMatch ? standardMatch[2] : literaryMatch[1];
-    const branch = literaryMatch?.[3];
+    const branch = literaryMatch?.[2];
     const id = `${type}${number}${branch ? `-${branch}` : ""}`;
-    const title = literaryMatch ? literaryMatch[2].replaceAll("-", " ") : null;
+    const title = literaryMatch ? literaryMatch[3].replaceAll("-", " ") : null;
     const imagePath = path.relative(repositoryRoot, absolutePath).split(path.sep).join("/");
 
     if (artworksById.has(id)) {
@@ -144,6 +144,10 @@ function normalizeLineEndings(source) {
   return source.replaceAll("\r\n", "\n");
 }
 
+function getBranch(id) {
+  return id.match(/^D\d{3}-([1-9]\d*)$/)?.[1] || "";
+}
+
 function renderGalleryArtworks(artworksById, orderedIds) {
   const galleryIds = [...orderedIds].reverse();
   const cards = galleryIds
@@ -155,8 +159,11 @@ function renderGalleryArtworks(artworksById, orderedIds) {
       const type = escapeHtml(id.charAt(0));
       const galleryNumber = String(galleryIds.length - index).padStart(3, "0");
       const accessibleName = escapedTitle ? `${escapedId} ${escapedTitle}` : escapedId;
+      const branch = getBranch(id);
       const titleMarkup = escapedTitle
-        ? `\n          <span class="artwork-title">${escapedTitle}</span>`
+        ? branch
+          ? `\n          <span class="artwork-title artwork-title--branched"><span class="artwork-title-branch">${branch}</span><span>${escapedTitle}</span></span>`
+          : `\n          <span class="artwork-title">${escapedTitle}</span>`
         : "";
 
       return `      <a class="artwork-card" href="artwork.html?id=${escapedId}" data-artwork-type="${type}" aria-label="${accessibleName}（分類 ${type}）">

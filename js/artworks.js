@@ -73,8 +73,8 @@
     },
     {
       id: "D004",
-      image: "images/type-d/D004-THE-DEATH-OF-A-GOVERNMENT-CLERK.webp",
-      title: "THE DEATH OF A GOVERNMENT CLERK"
+      image: "images/type-d/D004-1-THE-DEATH-OF-A-GOVERNMENT-CLERK.webp",
+      title: "1 THE DEATH OF A GOVERNMENT CLERK"
     },
   ];
 

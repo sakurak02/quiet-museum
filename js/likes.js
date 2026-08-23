@@ -1,7 +1,7 @@
 import { doc, increment, setDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { db } from "./firebase-config.js";
 
-const ID_PATTERN = /^[ABC][0-9]{3}$/;
+const ID_PATTERN = /^(?:[ABC][0-9]{3}|D[0-9]{3}(?:-[1-9][0-9]*)?)$/;
 
 function storageKey(artworkId) {
   return `quietMuseum.likes.v1.${artworkId}`;

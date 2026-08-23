@@ -6,13 +6,13 @@ service cloud.firestore {
       allow read: if false;
 
       allow create: if
-        artworkId.matches('^[ABC][0-9]{3}$')
+        artworkId.matches('^([ABC][0-9]{3}|D[0-9]{3}(-[1-9][0-9]*)?)$')
         && request.resource.data.keys().hasOnly(['count'])
         && request.resource.data.count is int
         && request.resource.data.count == 1;
 
       allow update: if
-        artworkId.matches('^[ABC][0-9]{3}$')
+        artworkId.matches('^([ABC][0-9]{3}|D[0-9]{3}(-[1-9][0-9]*)?)$')
         && request.resource.data.keys().hasOnly(['count'])
         && request.resource.data.diff(resource.data)
              .affectedKeys().hasOnly(['count'])

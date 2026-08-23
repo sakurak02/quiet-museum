@@ -6,7 +6,8 @@ const imagesDirectory = path.join(repositoryRoot, "images");
 const artworksFile = path.join(repositoryRoot, "js", "artworks.js");
 const galleryFile = path.join(repositoryRoot, "gallery.html");
 const sitemapFile = path.join(repositoryRoot, "sitemap.xml");
-const artworkFileNamePattern = /^([ABC])(\d{3})\.webp$/;
+const standardArtworkFileNamePattern = /^([ABC])(\d{3})\.webp$/;
+const literaryArtworkFileNamePattern = /^D(\d{3})-([A-Z0-9]+(?:-[A-Z0-9]+)*?)(?:-([1-9]\d*))?\.webp$/;
 const siteBaseUrl = "https://sakurak02.github.io/quiet-museum";
 const galleryStartMarker = "<!-- ARTWORKS_START -->";
 const galleryEndMarker = "<!-- ARTWORKS_END -->";
@@ -28,23 +29,27 @@ function getArtworkImages() {
 
   for (const absolutePath of findImageFiles(imagesDirectory)) {
     const fileName = path.basename(absolutePath);
-    const match = artworkFileNamePattern.exec(fileName);
+    const standardMatch = standardArtworkFileNamePattern.exec(fileName);
+    const literaryMatch = literaryArtworkFileNamePattern.exec(fileName);
 
-    if (!match) {
+    if (!standardMatch && !literaryMatch) {
       continue;
     }
 
-    const [, type, number] = match;
-    const id = `${type}${number}`;
+    const type = standardMatch ? standardMatch[1] : "D";
+    const number = standardMatch ? standardMatch[2] : literaryMatch[1];
+    const branch = literaryMatch?.[3];
+    const id = `${type}${number}${branch ? `-${branch}` : ""}`;
+    const title = literaryMatch ? literaryMatch[2].replaceAll("-", " ") : null;
     const imagePath = path.relative(repositoryRoot, absolutePath).split(path.sep).join("/");
 
     if (artworksById.has(id)) {
       throw new Error(
-        `Duplicate artwork ID ${id}: ${artworksById.get(id)} and ${imagePath}`
+        `Duplicate artwork ID ${id}: ${artworksById.get(id).image} and ${imagePath}`
       );
     }
 
-    artworksById.set(id, imagePath);
+    artworksById.set(id, { image: imagePath, title });
   }
 
   return artworksById;
@@ -57,7 +62,7 @@ function getExistingOrder(source) {
     throw new Error("Could not find the ARTWORKS array in js/artworks.js");
   }
 
-  return [...artworksBlock[1].matchAll(/\bid:\s*"([ABC]\d{3})"/g)].map(
+  return [...artworksBlock[1].matchAll(/\bid:\s*"([ABCD]\d{3}(?:-[1-9]\d*)?)"/g)].map(
     (match) => match[1]
   );
 }
@@ -74,12 +79,14 @@ function orderArtworkIds(artworksById, existingOrder) {
 
 function renderArtworks(artworksById, orderedIds) {
   const entries = orderedIds
-    .map(
-      (id) => `    {
+    .map((id) => {
+      const artwork = artworksById.get(id);
+      const title = artwork.title ? `,\n      title: "${artwork.title}"` : "";
+      return `    {
       id: "${id}",
-      image: "${artworksById.get(id)}"
-    },`
-    )
+      image: "${artwork.image}"${title}
+    },`;
+    })
     .join("\n");
 
   return `(function () {
@@ -142,17 +149,23 @@ function renderGalleryArtworks(artworksById, orderedIds) {
   const cards = galleryIds
     .map((id, index) => {
       const escapedId = escapeHtml(id);
-      const escapedImagePath = escapeHtml(artworksById.get(id));
+      const artwork = artworksById.get(id);
+      const escapedImagePath = escapeHtml(artwork.image);
+      const escapedTitle = artwork.title ? escapeHtml(artwork.title) : "";
       const type = escapeHtml(id.charAt(0));
       const galleryNumber = String(galleryIds.length - index).padStart(3, "0");
+      const accessibleName = escapedTitle ? `${escapedId} ${escapedTitle}` : escapedId;
+      const titleMarkup = escapedTitle
+        ? `\n          <span class="artwork-title">${escapedTitle}</span>`
+        : "";
 
-      return `      <a class="artwork-card" href="artwork.html?id=${escapedId}" data-artwork-type="${type}" aria-label="${escapedId}（分類 ${type}）">
+      return `      <a class="artwork-card" href="artwork.html?id=${escapedId}" data-artwork-type="${type}" aria-label="${accessibleName}（分類 ${type}）">
         <span class="gallery-number">${galleryNumber}</span>
         <div class="card-image">
-          <img src="${escapedImagePath}" alt="${escapedId}" loading="lazy">
+          <img src="${escapedImagePath}" alt="${accessibleName}" loading="lazy">
         </div>
         <div class="card-meta">
-          <span class="artwork-number">${escapedId}</span>
+          <span class="artwork-number">${escapedId}</span>${titleMarkup}
         </div>
       </a>`;
     })

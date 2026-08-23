@@ -24,7 +24,7 @@
   const previous = museum.artworks[currentIndex - 1];
   const next = museum.artworks[currentIndex + 1];
 
-  document.title = `${artwork.id} | Quiet Museum`;
+  document.title = `${artwork.id}${artwork.title ? ` — ${artwork.title}` : ""} | Quiet Museum`;
 
   const canonical = document.createElement("link");
   canonical.rel = "canonical";
@@ -37,8 +37,9 @@
       <div class="artwork-image-wrap">
         <img src="${artwork.image}" alt="${artwork.id}">
       </div>
-      <section class="artwork-detail">
+      <section class="artwork-detail${artwork.title ? " artwork-detail--titled" : ""}">
         <p class="artwork-detail-number">${artwork.id}</p>
+        ${artwork.title ? `<h1 class="artwork-detail-title">${artwork.title}</h1>` : ""}
         <button class="like-button" type="button" data-artwork-id="${artwork.id}" aria-label="この作品に♡をつける" aria-pressed="false">♡</button>
         <nav class="artwork-nav" aria-label="作品移動">
           ${previous ? `<a class="button" href="artwork.html?id=${encodeURIComponent(previous.id)}">Previous</a>` : `<span class="button disabled" aria-disabled="true">Previous</span>`}

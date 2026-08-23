@@ -19,6 +19,7 @@ js/firebase-config.js
 images/type-a/
 images/type-b/
 images/type-c/
+images/type-d/
 assets/icons/
 assets/logo/
 ```
@@ -42,6 +43,7 @@ assets/logo/
 A : AI Abstract
 B : AI × sakurak02
 C : sakurak02 Drawing
+D : AI × sakurako02 Literary Illustration
 ```
 
 作品追加時は、`ARTWORKS` の最後へ1ブロック追加してください。

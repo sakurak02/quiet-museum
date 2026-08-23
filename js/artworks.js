@@ -45,12 +45,14 @@
       image: "images/type-a/A006.webp"
     },
     {
-      id: "B003",
-      image: "images/type-b/B003.webp"
+      id: "D001",
+      image: "images/type-d/D001-KLARA-AND-THE-SUN.webp",
+      title: "KLARA AND THE SUN"
     },
     {
-      id: "B004",
-      image: "images/type-b/B004.webp"
+      id: "D002",
+      image: "images/type-d/D002-NIGHT-ON-THE-GALACTIC-RAILROAD.webp",
+      title: "NIGHT ON THE GALACTIC RAILROAD"
     },
     {
       id: "A007",
@@ -61,8 +63,9 @@
       image: "images/type-b/B005.webp"
     },
     {
-      id: "B006",
-      image: "images/type-b/B006.webp"
+      id: "D003",
+      image: "images/type-d/D003-FLOWERS-FOR-ALGERNON.webp",
+      title: "FLOWERS FOR ALGERNON"
     },
     {
       id: "A008",

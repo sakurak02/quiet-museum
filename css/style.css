@@ -31,6 +31,21 @@ a {
   text-decoration: none;
 }
 
+.some-clouds-link {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  z-index: 1;
+  color: var(--text);
+  font-size: 0.7rem;
+  line-height: 1.4;
+  transition: opacity 180ms ease;
+}
+
+.some-clouds-link:hover {
+  opacity: 0.55;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -368,6 +383,10 @@ p {
 }
 
 @media (max-width: 760px) {
+  .some-clouds-link {
+    left: 12px;
+  }
+
   .page-header {
     align-items: flex-start;
     flex-direction: column;

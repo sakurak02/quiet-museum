@@ -76,6 +76,11 @@
       image: "images/type-d/D004-1-THE-DEATH-OF-A-GOVERNMENT-CLERK.webp",
       title: "THE DEATH OF A GOVERNMENT CLERK"
     },
+    {
+      id: "D005",
+      image: "images/type-d/D005-CHEKHOV-ROTHSCHILDS-FIDDLE.webp",
+      title: "CHEKHOV ROTHSCHILDS FIDDLE"
+    },
   ];
 
   function getTypeFolder(id) {

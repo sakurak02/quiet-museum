@@ -78,8 +78,8 @@
     },
     {
       id: "D005",
-      image: "images/type-d/D005-CHEKHOV-ROTHSCHILDS-FIDDLE.webp",
-      title: "CHEKHOV ROTHSCHILDS FIDDLE"
+      image: "images/type-d/D005-NINGEN-SHIKKAKU.webp",
+      title: "NINGEN SHIKKAKU"
     },
   ];
 

@@ -81,6 +81,11 @@
       image: "images/type-d/D005-NINGEN-SHIKKAKU.webp",
       title: "NINGEN SHIKKAKU"
     },
+    {
+      id: "D006",
+      image: "images/type-d/D006-ANIMAL-FARM.webp",
+      title: "ANIMAL FARM"
+    },
   ];
 
   function getTypeFolder(id) {

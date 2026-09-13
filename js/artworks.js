@@ -86,6 +86,11 @@
       image: "images/type-d/D006-ANIMAL-FARM.webp",
       title: "ANIMAL FARM"
     },
+    {
+      id: "D007",
+      image: "images/type-d/D007-TAKASEBUNE.webp",
+      title: "TAKASEBUNE"
+    },
   ];
 
   function getTypeFolder(id) {

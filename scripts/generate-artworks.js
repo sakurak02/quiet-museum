@@ -7,7 +7,9 @@ const artworksFile = path.join(repositoryRoot, "js", "artworks.js");
 const galleryFile = path.join(repositoryRoot, "gallery.html");
 const sitemapFile = path.join(repositoryRoot, "sitemap.xml");
 const standardArtworkFileNamePattern = /^([ABC])(\d{3})\.webp$/;
+// The title contains one required segment and zero or more hyphen-separated segments.
 const literaryArtworkFileNamePattern = /^D(\d{3})(?:-([1-9]\d*))?-([A-Z0-9]+(?:-[A-Z0-9]+)*)\.webp$/;
+const literaryArtworkCandidatePattern = /^D\d{3}/i;
 const siteBaseUrl = "https://sakurak02.github.io/quiet-museum";
 const galleryStartMarker = "<!-- ARTWORKS_START -->";
 const galleryEndMarker = "<!-- ARTWORKS_END -->";
@@ -33,6 +35,13 @@ function getArtworkImages() {
     const literaryMatch = literaryArtworkFileNamePattern.exec(fileName);
 
     if (!standardMatch && !literaryMatch) {
+      if (literaryArtworkCandidatePattern.test(fileName)) {
+        throw new Error(
+          `Invalid Type D artwork filename: ${fileName}. ` +
+            "Expected Dnnn-TITLE.webp or Dnnn-BRANCH-TITLE.webp."
+        );
+      }
+
       continue;
     }
 

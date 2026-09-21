@@ -91,6 +91,16 @@
       image: "images/type-d/D007-TAKASEBUNE.webp",
       title: "TAKASEBUNE"
     },
+    {
+      id: "D008",
+      image: "images/type-d/D008-BOULE-DE-SUIF.webp",
+      title: "BOULE DE SUIF"
+    },
+    {
+      id: "D009",
+      image: "images/type-d/D009-GONGITSUNE.webp",
+      title: "GONGITSUNE"
+    },
   ];
 
   function getTypeFolder(id) {

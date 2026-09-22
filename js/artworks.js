@@ -101,6 +101,16 @@
       image: "images/type-d/D009-GONGITSUNE.webp",
       title: "GONGITSUNE"
     },
+    {
+      id: "D010",
+      image: "images/type-d/D010-AQ.webp",
+      title: "AQ"
+    },
+    {
+      id: "D011",
+      image: "images/type-d/D011-KANIKOSEN.webp",
+      title: "KANIKOSEN"
+    },
   ];
 
   function getTypeFolder(id) {

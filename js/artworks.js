@@ -111,6 +111,11 @@
       image: "images/type-d/D011-KANIKOSEN.webp",
       title: "KANIKOSEN"
     },
+    {
+      id: "D012",
+      image: "images/type-d/D012-THE-TRIAL.webp",
+      title: "THE TRIAL"
+    },
   ];
 
   function getTypeFolder(id) {
